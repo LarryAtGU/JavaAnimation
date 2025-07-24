@@ -7,6 +7,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.oosd.UI.*;
+import org.oosd.controller.GameController;
 import org.oosd.model.Game;
 
 import java.util.Optional;
@@ -15,6 +16,10 @@ public class Main extends Application implements Frame {
 
     private StackPane root;
     private Game game;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     private void buildScreens() {
         Screen mainScreen = new MainScreen(this);
@@ -36,12 +41,16 @@ public class Main extends Application implements Frame {
     @Override
     public void start(Stage primaryStage) {
         game = new Game();
+        GameController gc = new GameController(game);
         root = new StackPane();
-        Scene scene = new Scene(root, Game.fieldWidth, Game.fieldHeight);
+        Scene scene = new Scene(root, Game.fieldWidth + 2 * Env.HORIZONTAL_MARGIN,
+                Game.fieldHeight + Env.TOP_MARGIN + Env.BOTTOM_MARGIN);
+        scene.setOnKeyPressed(e -> gc.receiveKeyPress(e.getCode()));
         scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         primaryStage.setTitle("JavaFX Multi-Screen Game");
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setResizable(false);
         buildScreens();
         primaryStage.setOnCloseRequest(event -> {
             event.consume(); // Stop the window from closing automatically
@@ -51,10 +60,6 @@ public class Main extends Application implements Frame {
 
     public void showScreen(Screen scr) {
         root.getChildren().setAll(scr.getScreen());
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
     @Override
