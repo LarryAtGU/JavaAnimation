@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 public class Game {
     static public final double fieldWidth = 400;
     static public final double fieldHeight = 270;
+    static final int MAX_SPEED = 5;
     private double dx = 3;       // X velocity
     private double dy = 3;       // Y velocity
     private double x = fieldWidth / 2, y = fieldHeight / 2;
@@ -53,9 +54,6 @@ public class Game {
         this.size = size;
     }
 
-    public void increaseX() {
-        dx = dx > 0 ? dx - 1 : dx + 1;
-    }
 
     public void proceed() {
         double nextX = x + dx;
@@ -71,15 +69,22 @@ public class Game {
         y += dy;
     }
 
+    public void increaseX() {
+        dy = 0;
+        dx = Math.min(dx+1,MAX_SPEED);
+    }
     public void decreaseX() {
-        dx = dx < 0 ? dx - 1 : dx + 1;
+        dy = 0;
+        dx = Math.max(dx-1,-MAX_SPEED);
     }
 
     public void increaseY() {
-        dy = dy > 0 ? dy + 1 : dy - 1;
+        dx = 0;
+        dy = Math.min(dy+1,MAX_SPEED);
     }
 
     public void decreaseY() {
-        dy = dy < 0 ? dy + 1 : dy - 1;
+        dx = 0;
+        dy = Math.max(dy-1,-MAX_SPEED);
     }
 }

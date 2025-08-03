@@ -12,10 +12,10 @@ public class GameController {
 
     public void receiveKeyPress(KeyCode key) {
         switch (key) {
-            case KeyCode.UP -> game.increaseY();
-            case KeyCode.DOWN -> game.decreaseY();
-            case KeyCode.LEFT -> game.increaseX();
-            case KeyCode.RIGHT -> game.decreaseX();
+            case KeyCode.DOWN -> game.increaseY();
+            case KeyCode.UP -> game.decreaseY();
+            case KeyCode.RIGHT -> game.increaseX();
+            case KeyCode.LEFT -> game.decreaseX();
         }
     }
 }
