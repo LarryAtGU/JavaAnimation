@@ -18,7 +18,7 @@ public class GamePane extends Pane {
     private AnimationTimer timer;
     private Circle ball;
     private Game game;
-    private List<Sprite> sprites;
+    private final List<Sprite> sprites;
     public GamePane(){
         sprites = new ArrayList<>();
     }
