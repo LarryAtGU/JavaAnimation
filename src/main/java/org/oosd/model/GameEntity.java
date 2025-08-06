@@ -1,12 +1,98 @@
 package org.oosd.model;
 
-public abstract class GameEntity {
-    protected int x,y;
-    protected int dx,dy;
-    protected int size;
 
-    boolean isVisible(){
-        return false;
+import java.time.Instant;
+
+public abstract class GameEntity {
+    private double x, y;
+    private double dx, dy;
+    private double size; // like radius in circle
+    protected long birthTime;
+    protected long previousTime;
+
+    public GameEntity() {
+        birthTime = System.nanoTime();
+        previousTime = birthTime;
     }
+
+    boolean isBounce() {
+        return true;
+    }
+
+    void processMove() {
+        long currentTime = System.nanoTime();
+        if (dx == 0.0 && dy == 0.0) {
+            previousTime = currentTime;
+            return;
+        }
+        double steps = (currentTime - previousTime) / 2_000_000_0.0; // so one second has 50 (step) frames
+        double mx = steps * dx, my = steps * dy;
+        if (isBounce()) {
+            if (x + mx < size || x + mx > Game.fieldWidth - size) {
+                mx = -mx;
+                dx = -dx;
+            }
+            if (y + my < size || y + my > Game.fieldHeight - size) {
+                my = -my;
+                dy = -dy;
+            }
+        }
+        x += mx;
+        y += my;
+        previousTime = currentTime;
+    }
+
+    boolean isVisible() {
+        if (x < -size || y < -size || x > Game.fieldWidth + size || y > Game.fieldHeight + size) return false;
+        return true;
+    }
+
+    boolean isCollide(GameEntity target) {
+        double distance = Math.sqrt(Math.pow(target.x - x, 2) + Math.pow(target.y - y, 2));
+        return distance <= target.size + size;
+    }
+
     abstract void process();
+
+    abstract public EntityType getType();
+
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public double getDx() {
+        return dx;
+    }
+
+    public void setDx(double dx) {
+        this.dx = dx;
+    }
+
+    public double getDy() {
+        return dy;
+    }
+
+    public void setDy(double dy) {
+        this.dy = dy;
+    }
+
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
+    }
 }

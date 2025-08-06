@@ -1,20 +1,31 @@
 package org.oosd.UI.sprite;
 
 import javafx.scene.Node;
+import org.oosd.model.GameEntity;
 
-public class StarSprite implements Sprite{
+public class StarSprite implements Sprite {
     private final Node star;
-    public StarSprite(){
+    private final GameEntity entity;
+
+    public StarSprite(GameEntity entity) {
+        this.entity = entity;
         star = new Star();
+        update();
     }
+
     @Override
     public Node getNode() {
         return star;
     }
 
     @Override
-    public void setXY(double x, double y) {
-        star.setTranslateX(x);
-        star.setTranslateY(y);
+    public GameEntity getEntity() {
+        return entity;
+    }
+
+    @Override
+    public void update() {
+        star.setTranslateX(entity.getX());
+        star.setTranslateY(entity.getY());
     }
 }

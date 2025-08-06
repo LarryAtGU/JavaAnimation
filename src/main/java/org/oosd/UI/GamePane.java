@@ -16,50 +16,49 @@ import java.util.List;
 
 public class GamePane extends Pane {
     private AnimationTimer timer;
-    private Circle ball;
     private Game game;
     private final List<Sprite> sprites;
-    public GamePane(){
+
+    public GamePane() {
         sprites = new ArrayList<>();
     }
+
+    private void addSprites() {
+        List<Sprite> list = SpriteFactory.getFactory().produceSprites();
+        if (list == null) return;
+        for (Sprite sprite : list) {
+            getChildren().add(sprite.getNode());
+        }
+    }
+
+    private void updateSprites() {
+        SpriteFactory.getFactory().updateSprites();
+    }
+
     public void setGame(Game game) {
         this.game = game;
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 game.proceed();
-                ball.setCenterX(game.getX());
-                ball.setCenterY(game.getY());
+                addSprites();
+                updateSprites();
+
             }
         };
 
     }
-    private void initSprites(int num){
-        sprites.clear();
-        for(int i = 0;i<num;++i) {
-            Sprite sprite = SpriteFactory.getFactory().createSprite();
-            sprites.add(sprite);
-        }
-    }
+
+
     private void buildGamePane() {
         // Create field border
         Rectangle field = new Rectangle(0, 0, Game.fieldWidth, Game.fieldHeight);
         field.setFill(Color.TRANSPARENT);
         field.setStroke(Color.BLACK);
-        Rectangle clip = new Rectangle(0,0,Game.fieldWidth,Game.fieldHeight);
+        Rectangle clip = new Rectangle(0, 0, Game.fieldWidth, Game.fieldHeight);
         setClip(clip);
-        // Create ball
-        ball = new Circle(game.getSize(), game.getColor());
-        if (game.isHasShadow()) {
-            DropShadow shadow = new DropShadow();
-            shadow.setOffsetX(5);
-            shadow.setOffsetY(5);
-            ball.setEffect(shadow);
-        }
-        getChildren().setAll(field, ball);
-        initSprites(10); // create 10 sprites
-        for(Sprite sprite : sprites)
-            getChildren().add(sprite.getNode());
+        getChildren().clear();
+        getChildren().add(field);
         requestFocus();  // Ensure pane gets key input
     }
 
@@ -68,7 +67,9 @@ public class GamePane extends Pane {
     }
 
     void startGame() {
+        SpriteFactory.getFactory().initFactory();
         buildGamePane();
+        game.initGame();
         timer.start();
     }
 }
