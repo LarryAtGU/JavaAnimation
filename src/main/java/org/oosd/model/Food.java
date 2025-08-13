@@ -29,4 +29,9 @@ public class Food extends GameEntity {
     public EntityType getType() {
         return EntityType.FOOD;
     }
+
+    @Override
+    boolean isBounce() {
+        return false;
+    }
 }
