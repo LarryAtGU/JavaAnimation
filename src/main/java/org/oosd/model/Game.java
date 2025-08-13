@@ -1,8 +1,6 @@
 package org.oosd.model;
 
-import javafx.scene.paint.Color;
 import org.oosd.UI.sprite.SpriteFactory;
-import org.oosd.UI.sprite.SpriteType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,7 @@ public class Game {
 
     }
 
-    private void fillFoods() {
+    private synchronized void fillFoods() {
         int curFoodNum = getEntityNum(EntityType.FOOD);
         if (curFoodNum * 2 > foodNum) return;
         for (int i = curFoodNum; i < foodNum; ++i) {
@@ -42,19 +40,8 @@ public class Game {
         return (int) entities.stream().filter(e -> e.getType() == type).count();
     }
 
-    public List<GameEntity> getEntities() {
-        return entities;
-    }
 
-    public int getFoodNum() {
-        return foodNum;
-    }
-
-    public void setFoodNum(int foodNum) {
-        this.foodNum = foodNum;
-    }
-
-    private void removeDeadEntities() {
+    private synchronized void removeDeadEntities() {
         entities.removeIf(GameEntity::isDead);
     }
 
