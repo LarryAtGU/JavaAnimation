@@ -12,8 +12,8 @@ public class Food extends GameEntity {
         setX(Math.random() * Game.fieldWidth);
         setY(Math.random() * Game.fieldHeight);
         if (Math.random() > 0.5) { // 50% can move
-            setDx(Math.random() * 4 - 2);
-            setDy(Math.random() * 4 - 2);
+            setDx(Math.random() * 3.0 - 1.5);
+            setDy(Math.random() * 3.0 - 1.5);
         }
 
         life = ThreadLocalRandom.current().nextInt(MIN_LIFE, MAX_LIFE);
