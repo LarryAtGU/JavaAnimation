@@ -27,6 +27,8 @@ public class GamePane extends Pane {
     private void removeDeadSprites() {
         List<Sprite> deadSprites = SpriteFactory.getFactory()
                 .extractAndRemoveDeadSprites();
+        if (deadSprites.isEmpty()) return;
+        sprites.removeAll(deadSprites);
         getChildren().removeAll(
                 deadSprites.stream().map(Sprite::getNode)
                         .toList()
@@ -37,12 +39,13 @@ public class GamePane extends Pane {
         List<Sprite> list = SpriteFactory.getFactory().produceSprites();
         if (list == null) return;
         for (Sprite sprite : list) {
+            sprites.add(sprite);
             getChildren().add(sprite.getNode());
         }
     }
 
     private void updateSprites() {
-        SpriteFactory.getFactory().updateSprites();
+        for (Sprite sprite : sprites) sprite.update();
     }
 
     public void setGame(Game game) {

@@ -1,10 +1,9 @@
+
 package org.oosd.UI.sprite;
 
-import org.oosd.model.Game;
 import org.oosd.model.GameEntity;
 import org.oosd.model.Player;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,11 +39,6 @@ public class SpriteFactory {
                 .collect(Collectors.toList());
         sprites.removeAll(deadSprites);
         return deadSprites;
-    }
-
-
-    public synchronized void updateSprites() {
-        for (Sprite sprite : sprites) sprite.update();
     }
 
     private SpriteFactory() {
