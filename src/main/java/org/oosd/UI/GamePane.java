@@ -24,9 +24,10 @@ public class GamePane extends Pane {
         sprites = new ArrayList<>();
     }
 
-    private void removeDeadSprites() {
-        List<Sprite> deadSprites = SpriteFactory.getFactory()
-                .extractAndRemoveDeadSprites();
+    private synchronized void removeDeadSprites() {
+        List<Sprite> deadSprites = sprites.stream()
+                .filter(Sprite::isDead)
+                .toList();
         if (deadSprites.isEmpty()) return;
         sprites.removeAll(deadSprites);
         getChildren().removeAll(
@@ -35,7 +36,7 @@ public class GamePane extends Pane {
         );
     }
 
-    private void addSprites() {
+    private synchronized void addSprites() {
         List<Sprite> list = SpriteFactory.getFactory().produceSprites();
         if (list == null) return;
         for (Sprite sprite : list) {
@@ -44,7 +45,7 @@ public class GamePane extends Pane {
         }
     }
 
-    private void updateSprites() {
+    private synchronized void updateSprites() {
         for (Sprite sprite : sprites) sprite.update();
     }
 

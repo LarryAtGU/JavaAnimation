@@ -5,15 +5,12 @@ import org.oosd.model.GameEntity;
 import org.oosd.model.Player;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SpriteFactory {
 
-    private List<Sprite> sprites;
     private List<GameEntity> entities;
 
-    public void initFactory() {
-        sprites = new ArrayList<>();
+    public synchronized void initFactory() {
         entities = new ArrayList<>();
     }
 
@@ -27,18 +24,9 @@ public class SpriteFactory {
         while (!entities.isEmpty()) {
             GameEntity entity = entities.removeFirst();
             Sprite sprite = produceSprite(entity);
-            sprites.add(sprite);
             retSprites.add(sprite);
         }
         return retSprites;
-    }
-
-    public List<Sprite> extractAndRemoveDeadSprites() {
-        List<Sprite> deadSprites = sprites.stream()
-                .filter(Sprite::isDead)
-                .collect(Collectors.toList());
-        sprites.removeAll(deadSprites);
-        return deadSprites;
     }
 
     private SpriteFactory() {
@@ -51,7 +39,6 @@ public class SpriteFactory {
     public static SpriteFactory getFactory() {
         return SingletonFactory.factory;
     }
-
 
     private Sprite produceSprite(GameEntity entity) {
         SpriteType type = EntitySpriteMapper.getSpriteType(entity.getType());
