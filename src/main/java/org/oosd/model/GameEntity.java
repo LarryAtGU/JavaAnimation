@@ -1,8 +1,5 @@
 package org.oosd.model;
 
-
-import java.time.Instant;
-
 public abstract class GameEntity {
     private double x, y;
     private double dx, dy;
@@ -10,9 +7,19 @@ public abstract class GameEntity {
     protected long birthTime;
     protected long previousTime;
 
+    protected int life; //-1 if eternal life
+
     public GameEntity() {
         birthTime = System.nanoTime();
         previousTime = birthTime;
+        life = -1;
+    }
+
+    private int getRemainLife() {
+        if (life == -1) return -1; // eternal life
+        int pastLife = (int) ((System.nanoTime() - birthTime) / 1_000_000_000);
+        int remainLife = life - pastLife;
+        return Math.max(remainLife, 0);
     }
 
     boolean isBounce() {
@@ -45,6 +52,11 @@ public abstract class GameEntity {
     boolean isVisible() {
         if (x < -size || y < -size || x > Game.fieldWidth + size || y > Game.fieldHeight + size) return false;
         return true;
+    }
+
+    public boolean isDead() {
+        if (getRemainLife() == 0) return true;
+        return !isVisible();
     }
 
     boolean isCollide(GameEntity target) {

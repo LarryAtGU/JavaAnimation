@@ -6,6 +6,7 @@ import org.oosd.model.Player;
 
 import javax.swing.text.html.parser.Entity;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SpriteFactory {
 
@@ -32,6 +33,15 @@ public class SpriteFactory {
         }
         return retSprites;
     }
+
+    public List<Sprite> extractAndRemoveDeadSprites() {
+        List<Sprite> deadSprites = sprites.stream()
+                .filter(Sprite::isDead)
+                .collect(Collectors.toList());
+        sprites.removeAll(deadSprites);
+        return deadSprites;
+    }
+
 
     public synchronized void updateSprites() {
         for (Sprite sprite : sprites) sprite.update();

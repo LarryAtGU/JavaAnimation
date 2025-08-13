@@ -1,6 +1,7 @@
 package org.oosd.UI.sprite;
 
 import javafx.scene.Node;
+import org.oosd.model.GameConfig;
 import org.oosd.model.GameEntity;
 import org.oosd.model.Player;
 
@@ -11,7 +12,7 @@ public class PlayerSprite implements Sprite {
     public PlayerSprite(Player player) {
         System.out.println("Player is created.");
         this.player = player;
-        ball = new Ball(player.getSize(), player.getColor(), player.isHasShadow());
+        ball = new Ball(player.getSize(), GameConfig.getInstance().getColor(), GameConfig.getInstance().isHasShadow());
         update();
     }
 

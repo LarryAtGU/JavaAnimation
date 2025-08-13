@@ -8,5 +8,9 @@ public interface Sprite {
 
     public GameEntity getEntity();
 
+    public default boolean isDead() {
+        return getEntity().isDead();
+    }
+
     public void update();
 }

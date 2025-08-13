@@ -13,6 +13,7 @@ import org.oosd.model.Game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GamePane extends Pane {
     private AnimationTimer timer;
@@ -21,6 +22,15 @@ public class GamePane extends Pane {
 
     public GamePane() {
         sprites = new ArrayList<>();
+    }
+
+    private void removeDeadSprites() {
+        List<Sprite> deadSprites = SpriteFactory.getFactory()
+                .extractAndRemoveDeadSprites();
+        getChildren().removeAll(
+                deadSprites.stream().map(Sprite::getNode)
+                        .toList()
+        );
     }
 
     private void addSprites() {
@@ -43,6 +53,7 @@ public class GamePane extends Pane {
                 game.proceed();
                 addSprites();
                 updateSprites();
+                removeDeadSprites();
 
             }
         };

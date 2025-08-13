@@ -2,6 +2,7 @@ package org.oosd.model;
 
 import javafx.scene.paint.Color;
 import org.oosd.UI.sprite.SpriteFactory;
+import org.oosd.UI.sprite.SpriteType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +25,21 @@ public class Game {
         SpriteFactory.getFactory().addEntity(player);
         player.setX(fieldWidth / 2);
         player.setY(fieldHeight / 2);
-        initFoods();
 
     }
 
-    private void initFoods() {
-        for (int i = 0; i < foodNum; ++i) {
+    private void fillFoods() {
+        int curFoodNum = getEntityNum(EntityType.FOOD);
+        if (curFoodNum * 2 > foodNum) return;
+        for (int i = curFoodNum; i < foodNum; ++i) {
             Food food = new Food();
             entities.add(food);
             SpriteFactory.getFactory().addEntity(food);
         }
+    }
+
+    private int getEntityNum(EntityType type) {
+        return (int) entities.stream().filter(e -> e.getType() == type).count();
     }
 
     public List<GameEntity> getEntities() {
@@ -48,37 +54,14 @@ public class Game {
         this.foodNum = foodNum;
     }
 
-    public boolean isHasShadow() {
-        if (player == null) return false;
-        return player.isHasShadow();
+    private void removeDeadEntities() {
+        entities.removeIf(GameEntity::isDead);
     }
-
-    public void setHasShadow(boolean hasShadow) {
-        player.setHasShadow(hasShadow);
-    }
-
-    public String getColorString() {
-        if (player == null) return "RED";
-        return player.getColorString();
-    }
-
-    public void setColorString(String colorString) {
-        player.setColorString(colorString);
-    }
-
-
-    public int getSize() {
-        if (player == null) return 10;
-        return (int) player.getSize();
-    }
-
-    public void setSize(int size) {
-        player.setSize(size);
-    }
-
 
     public void proceed() {
         for (GameEntity entity : entities) entity.process();
+        removeDeadEntities();
+        fillFoods();
     }
 
     public void increaseX() {

@@ -1,6 +1,11 @@
 package org.oosd.model;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Food extends GameEntity {
+
+    private static final int MIN_LIFE = 5;
+    private static final int MAX_LIFE = 15;
 
     public Food() {
         super();
@@ -10,6 +15,9 @@ public class Food extends GameEntity {
             setDx(Math.random() * 4 - 2);
             setDy(Math.random() * 4 - 2);
         }
+
+        life = ThreadLocalRandom.current().nextInt(MIN_LIFE, MAX_LIFE);
+
     }
 
     @Override
