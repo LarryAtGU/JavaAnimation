@@ -26,3 +26,13 @@
 .menu-button:pressed {
     -fx-background-color: #2357c6;
 }
+.message-life-count-down {
+    -fx-background-color: rgba(0,0,0,0.0);
+    -fx-padding: 2 4 2 4;
+}
+
+.message-fly {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: blue;
+}

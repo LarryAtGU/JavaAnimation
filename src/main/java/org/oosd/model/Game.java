@@ -1,6 +1,7 @@
 package org.oosd.model;
 
 import org.oosd.UI.sprite.SpriteFactory;
+import org.oosd.audio.AudioFacade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,18 +12,28 @@ public class Game {
     private Player player;
     private int foodNum;
     private List<GameEntity> entities;
+    private boolean isGameOver;
 
     public Game() {
         foodNum = 8;
     }
 
     public void initGame() {
+        isGameOver = false;
         player = new Player();
         entities = new ArrayList<>();
         entities.add(player);
         SpriteFactory.getFactory().addEntity(player);
         player.setX(fieldWidth / 2);
         player.setY(fieldHeight / 2);
+        AudioFacade.playBgm();
+
+    }
+
+    private synchronized void addMessage(String text, double x, double y) {
+        Message message = new Message(text, x, y);
+        entities.add(message);
+        SpriteFactory.getFactory().addEntity(message);
 
     }
 
@@ -34,36 +45,67 @@ public class Game {
             entities.add(food);
             SpriteFactory.getFactory().addEntity(food);
         }
+        AudioFacade.playNewFood();
     }
 
     private int getEntityNum(EntityType type) {
         return (int) entities.stream().filter(e -> e.getType() == type).count();
     }
 
+    private void eatFood() {
+        List<GameEntity> foods = entities.stream().filter(e -> e.getType() == EntityType.FOOD).toList();
+        for (GameEntity food : foods) {
+            if (food.isCollide(player) && food instanceof Food f) {
+                f.setIsEaten();
+                player.eatFood(f);
+                addMessage("+1", player.getX(), player.getY());
+                AudioFacade.playEatFood();
+
+            }
+        }
+
+    }
 
     private synchronized void removeDeadEntities() {
         entities.removeIf(GameEntity::isDead);
     }
 
     public void proceed() {
+        if (isGameOver) return;
+        if (player == null || player.getRemainLife() == 0) {
+            AudioFacade.playGameFinish();
+            AudioFacade.stopBgm();
+
+            addMessage("Game Over", fieldWidth / 2, fieldHeight / 2);
+            isGameOver = true;
+        }
         for (GameEntity entity : entities) entity.process();
         removeDeadEntities();
         fillFoods();
+        eatFood();
+    }
+
+    public boolean isGameOver() {
+        return isGameOver;
     }
 
     public void increaseX() {
+        AudioFacade.playChangeDir();
         player.increaseX();
     }
 
     public void decreaseX() {
+        AudioFacade.playChangeDir();
         player.decreaseX();
     }
 
     public void increaseY() {
+        AudioFacade.playChangeDir();
         player.increaseY();
     }
 
     public void decreaseY() {
+        AudioFacade.playChangeDir();
         player.decreaseY();
     }
 }

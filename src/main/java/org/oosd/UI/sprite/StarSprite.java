@@ -3,14 +3,13 @@ package org.oosd.UI.sprite;
 import javafx.scene.Node;
 import org.oosd.model.GameEntity;
 
-public class StarSprite implements Sprite {
+public class StarSprite implements Sprite<GameEntity, Node> {
     private final Node star;
     private final GameEntity entity;
 
     public StarSprite(GameEntity entity) {
         this.entity = entity;
         star = new Star();
-        update();
     }
 
     @Override
