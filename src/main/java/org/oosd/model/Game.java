@@ -26,7 +26,7 @@ public class Game {
         SpriteFactory.getFactory().addEntity(player);
         player.setX(fieldWidth / 2);
         player.setY(fieldHeight / 2);
-        AudioFacade.playBgm();
+        AudioFacade.get().playBgm();
 
     }
 
@@ -45,7 +45,7 @@ public class Game {
             entities.add(food);
             SpriteFactory.getFactory().addEntity(food);
         }
-        AudioFacade.playNewFood();
+        AudioFacade.get().playNewFood();
     }
 
     private int getEntityNum(EntityType type) {
@@ -59,7 +59,7 @@ public class Game {
                 f.setIsEaten();
                 player.eatFood(f);
                 addMessage("+1", player.getX(), player.getY());
-                AudioFacade.playEatFood();
+                AudioFacade.get().playEatFood();
 
             }
         }
@@ -73,8 +73,8 @@ public class Game {
     public void proceed() {
         if (isGameOver) return;
         if (player == null || player.getRemainLife() == 0) {
-            AudioFacade.playGameFinish();
-            AudioFacade.stopBgm();
+            AudioFacade.get().playGameFinish();
+            AudioFacade.get().stopBgm();
 
             addMessage("Game Over", fieldWidth / 2, fieldHeight / 2);
             isGameOver = true;
@@ -90,22 +90,22 @@ public class Game {
     }
 
     public void increaseX() {
-        AudioFacade.playChangeDir();
+        AudioFacade.get().playChangeDir();
         player.increaseX();
     }
 
     public void decreaseX() {
-        AudioFacade.playChangeDir();
+        AudioFacade.get().playChangeDir();
         player.decreaseX();
     }
 
     public void increaseY() {
-        AudioFacade.playChangeDir();
+        AudioFacade.get().playChangeDir();
         player.increaseY();
     }
 
     public void decreaseY() {
-        AudioFacade.playChangeDir();
+        AudioFacade.get().playChangeDir();
         player.decreaseY();
     }
 }

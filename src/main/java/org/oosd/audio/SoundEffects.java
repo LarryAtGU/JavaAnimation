@@ -8,19 +8,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public class SoundEffects {
-
-    public enum Effect {
-        EAT_FOOD, GAME_FINISH, CHANGE_DIR, NEW_FOOD
-    }
-
-    // Map each effect to a resource path in your classpath
-    private static final Map<Effect, String> PATHS = Map.of(
-            Effect.EAT_FOOD, "/audio/erase-line.wav",
-            Effect.GAME_FINISH, "/audio/game-finish.wav",
-            Effect.CHANGE_DIR, "/audio/move-turn.wav",
-            Effect.NEW_FOOD, "/audio/level-up.wav"
-    );
-
     private final Map<Effect, AudioClip> cache = new EnumMap<>(Effect.class);
     private double volume = 1.0; // 0.0–1.0
 
@@ -43,4 +30,17 @@ public class SoundEffects {
                 "SFX resource not found: " + path);
         return new AudioClip(url.toExternalForm());
     }
+
+    public enum Effect {
+        EAT_FOOD, GAME_FINISH, CHANGE_DIR, NEW_FOOD
+    }
+
+    // Map each effect to a resource path in your classpath
+    private static final Map<Effect, String> PATHS = Map.of(
+            Effect.EAT_FOOD, "/audio/erase-line.wav",
+            Effect.GAME_FINISH, "/audio/game-finish.wav",
+            Effect.CHANGE_DIR, "/audio/move-turn.wav",
+            Effect.NEW_FOOD, "/audio/level-up.wav"
+    );
+
 }
