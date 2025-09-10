@@ -19,6 +19,10 @@ public abstract class GameEntity {
         return false;
     }
 
+    public void setLife(int life) {
+        this.life = life;
+    }
+
     public int getRemainLife() {
         if (life == -1) return -1; // eternal life
         int pastLife = (int) ((System.nanoTime() - birthTime) / 1_000_000_000);

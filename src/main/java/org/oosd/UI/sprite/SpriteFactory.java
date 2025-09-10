@@ -4,7 +4,6 @@ package org.oosd.UI.sprite;
 import org.oosd.model.GameEntity;
 import org.oosd.model.Message;
 import org.oosd.model.Player;
-import javafx.scene.Node;
 
 import java.util.*;
 

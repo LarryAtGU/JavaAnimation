@@ -1,7 +1,5 @@
 package org.oosd.UI.sprite;
 
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.scene.control.Label;
 import org.oosd.model.Message;
 
